@@ -11,7 +11,7 @@ function confirmDelete() {
 }
 </script>
 
-<div id="main-content"> 
+<div id="main-content" ng-controller="invoiceListViewctrl"> 
 	<div class="page-content">
    
 		<!-- title -->
@@ -43,70 +43,109 @@ function confirmDelete() {
               	$this->session->unset_userdata('success');
               }
               ?>
-              <?php 
+			  
+			  <form method="get" action="<?php echo base_url();?>invoice">
+				Search: <input type="text" name="search" ng-model="search" ng-change="filter()" placeholder="Filter" />
+				<select ng-model="entryLimit" class="sel_entryLimit">
+					<option ng-selected="true">20</option>
+					<option>30</option>
+					<option>50</option>
+					<option>100</option>
+					<option>200</option>
+					<option>300</option>
+					<option>500</option>
+				</select>
+				<!--<input type="submit" class="btn btn-primary" value="Search" name="submit"/>-->
+			</form>
+			  <?php 
               if ($this->session->userdata('user_type') == 'customer') {?>
-            
-              	 <form method="get" action="<?php echo base_url();?>customerinv">
+				<!--- !important later implement -->
+              	 <!--<form method="get" action="<?php //echo base_url();?>customerinv">
               		Search: <input type="text" name="search" />
               		<input type="submit" class="btn btn-primary" value="Search" name="submit"/>
-              	</form>
+              	</form>-->
               <?php } else {?>
-                <form method="get" action="<?php echo base_url();?>invoice">
+				<!--- !important later implement -->
+                <!--<form method="get" action="<?php //echo base_url();?>invoice">
               		Search: <input type="text" name="search" />
               		<input type="submit" class="btn btn-primary" value="Search" name="submit"/>
-              	</form>
+              	</form>-->
               <?php } ?>
+			  
+				<?php 
+				$data['igcol']="9"; $data['pdfpage']="A4"; $data['pdfFontSize']="4"; $data['pdfspace']="20";
+				$this->load->view('common/exporttable', $data); 
+				?>
               	<br/>
 
-             	<table class="table table-bordered">
+             	<table class="table table-bordered" id="ang_table">
 					<thead>
 					<tr>
-						<th>Contract No.</th>
-						<th>Contract Date</th>
-						<th>Funding Amt</th>
-						<th>Start Payout</th>
-						<th>End Payout</th>
-						<th>Customer</th>
-						<th>Manager</th>
-						<th>Agent</th>
-						<th>Created Date</th>
+						<th ng-click="sortField = 'inv_no'; reverse = !reverse"><a href="">Contract No.</a></th>
+						<th ng-click="sortField = 'inv_date'; reverse = !reverse"><a href="">Contract Date</a></th>
+						<th ng-click="sortField = 'inv_total'; reverse = !reverse"><a href="">Funding Amt</a></th>
+						<th ng-click="sortField = 'payout.min'; reverse = !reverse"><a href="">Start Payout</a></th>
+						<th ng-click="sortField = 'payout.max'; reverse = !reverse"><a href="">End Payout</a></th>
+						<th ng-click="sortField = 'customer_name'; reverse = !reverse"><a href="">Funder</a></th>
+						<th ng-click="sortField = 'm_name'; reverse = !reverse"><a href="">Manager</a></th>
+						<th ng-click="sortField = 'agent_name'; reverse = !reverse"><a href="">Agent</a></th>
+						<th ng-click="sortField = 'inv_created_date'; reverse = !reverse"><a href="">Created Date</a></th>
 						<th>Action</th>
 					</tr>
 					</thead>
-					<tbody>
+					<tbody ng-init="getdatas(<?php echo htmlspecialchars(json_encode($invoices,JSON_NUMERIC_CHECK)); ?>)">
 					
 					<?php
-					if (isset($invoices) && count($invoices) > 0) {
-						$page = isset($_GET['p']) && $_GET['p'] != '' ? $_GET['p'] : 1;
-						$start = ($page - 1) * $per_page;
+					// if (isset($invoices) && count($invoices) > 0) {
+						// $page = isset($_GET['p']) && $_GET['p'] != '' ? $_GET['p'] : 1;
+						// $start = ($page - 1) * $per_page;
 							
-						for ($i = 0; $i < count($invoices); $i++) {
-							echo '<tr>';
+						// for ($i = 0; $i < count($invoices); $i++) {
+							// echo '<tr>';
 							
-							echo '<td>'.$invoices[$i]->{'inv_no'}.'</td>';
-							echo '<td>'.$invoices[$i]->{'inv_date'}.'</td>';
-							echo '<td>$'.number_format($invoices[$i]->{'inv_total'},2,'.',',').'</td>';
-							echo '<td>'.date('d-M-Y', strtotime($invoices[$i]->{'payout'}->{'min'})).'</td>';
-							echo '<td>'.date('d-M-Y', strtotime($invoices[$i]->{'payout'}->{'max'})).'</td>';
-							echo '<td>'.$invoices[$i]->{'customer_name'}.'</td>';
+							// echo '<td>'.$invoices[$i]->{'inv_no'}.'</td>';
+							// echo '<td>'.$invoices[$i]->{'inv_date'}.'</td>';
+							// echo '<td>$'.number_format($invoices[$i]->{'inv_total'},2,'.',',').'</td>';
+							// echo '<td>'.date('d-M-Y', strtotime($invoices[$i]->{'payout'}->{'min'})).'</td>';
+							// echo '<td>'.date('d-M-Y', strtotime($invoices[$i]->{'payout'}->{'max'})).'</td>';
+							// echo '<td>'.$invoices[$i]->{'customer_name'}.'</td>';
 							
-							echo '<td>'.$invoices[$i]->{'m_name'}.'</td>';
-							echo '<td>'.$invoices[$i]->{'agent_name'}.'</td>';
+							// echo '<td>'.$invoices[$i]->{'m_name'}.'</td>';
+							// echo '<td>'.$invoices[$i]->{'agent_name'}.'</td>';
 								
-							echo '<td>'.date('Y-m-d', strtotime($invoices[$i]->{'inv_created_date'})).'</td>';
-							echo '<td><a href="'.base_url().'invoice/viewInvoice/?inv='.$invoices[$i]->{'inv_id'}.'">View</a>';
-							if ($this->session->userdata('user_type') == 'admin') 
-							echo ' | 
-								<a href="'.base_url().'invoice/editInvoice/?inv='.$invoices[$i]->{'inv_id'}.'">Edit</a> | 
-								<a href="'.base_url().'invoice/deleteInvoice/?inv='.$invoices[$i]->{'inv_id'}.'" onClick="return confirmDelete();">Delete</a>';
+							// echo '<td>'.date('Y-m-d', strtotime($invoices[$i]->{'inv_created_date'})).'</td>';
+							// echo '<td><a href="'.base_url().'invoice/viewInvoice/?inv='.$invoices[$i]->{'inv_id'}.'">View</a>';
+							// if ($this->session->userdata('user_type') == 'admin') 
+							// echo ' | 
+								// <a href="'.base_url().'invoice/editInvoice/?inv='.$invoices[$i]->{'inv_id'}.'">Edit</a> | 
+								// <a href="'.base_url().'invoice/deleteInvoice/?inv='.$invoices[$i]->{'inv_id'}.'" onClick="return confirmDelete();">Delete</a>';
 								
-							echo '</td>';
-							echo '</tr>';
-						}
-					}
+							// echo '</td>';
+							// echo '</tr>';
+						// }
+					// }
 					?>
+					
+					<tr id="{{datas.dr_id}}" tr-id="{{datas.dr_id}}" ng-repeat="datas in filtered = (datas | filter:search | orderBy : sortField :reverse |  startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit) track by $index">
+						<td>{{ datas.inv_no }}</td>
+						<td>{{ datas.inv_date | date:'dd-MMM-yyyy' }}</td>
+						<td>{{ datas.inv_total | currency }}</td>
+						<td class="datetd">{{ convertToDate(datas.payout.min) | date:'dd-MMM-yyyy' }}</td>
+						<td class="datetd">{{ convertToDate(datas.payout.max) | date:'dd-MMM-yyyy' }}</td>
+						<td>{{ datas.customer_name }}</td>
+						<td>{{ datas.m_name }}</td>
+						<td>{{ datas.agent_name }}</td>
+						<td class="datetd">{{ convertToDate(datas.inv_created_date) | date:'dd-MMM-yyyy' }}</td>
+						<td>
+							<a href="<?php echo base_url(); ?>invoice/viewInvoice/?inv={{datas.inv_id}}">View</a> | 
+							<a href="<?php echo base_url(); ?>invoice/editInvoice/?inv={{datas.inv_id}}">Edit</a> | 
+							<a href="<?php echo base_url(); ?>invoice/deleteInvoice/?inv={{datas.inv_id}}" onclick="return confirmDelete();">Delete</a>
+						</td>
+					</tr>
+					
 					</tbody>
 				</table>
+				<a href=""><div pagination="" page="currentPage" max-size="4" on-select-page="setPage(page)" boundary-links="true" total-items="filteredItems" items-per-page="entryLimit" class="pagination-small" previous-text="&laquo;"	 next-text="&raquo;"></div></a><br>
 				<?php echo $this->pagination->create_links(); ?>
 		
             </div><!--/porlets-content-->

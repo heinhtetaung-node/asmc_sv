@@ -46,7 +46,7 @@ class Customer_model extends CI_Model {
 					or customer.customer_addr like '%$search%') ";
 		}
 		
-		$sql = "select * from customer where active = 1 $where order by customer_name asc ".$filter;
+		$sql = "select * from customer where active = 1 $where order by customer_id desc ".$filter;
 		$query = $this->db->query($sql);
 		$m = array();
 		if ($query->num_rows() > 0) {

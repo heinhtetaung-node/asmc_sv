@@ -34,12 +34,12 @@ class Customer extends CI_Controller {
 	
 	//list all Customers
 	public function index() {
-		$data['title'] = 'Customers';
-		$data['subtitle'] = 'Customer Lists';
+		$data['title'] = 'Funder';
+		$data['subtitle'] = 'Funder Lists';
 		
 		$data['active'] = 'customer';
 		
-		$per_page = 20;
+		$per_page = 250;
 		$data['per_page'] = $per_page;
 		
 		$limit = $per_page;

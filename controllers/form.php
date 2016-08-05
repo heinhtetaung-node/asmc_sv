@@ -89,6 +89,29 @@ class Form extends CI_Controller {
 			else if ($this->session->userdata('user_type') == 'director')
 				$_POST['creator_id'] = $this->session->userdata('director')->{'dr_id'};
 			
+			//echo "<pre>";
+			//var_dump($_POST);
+			//echo "</pre>";
+			
+			//exit;
+			
+			// Date change to valid Edit by Hein Htet Aung August 3 
+			if($_POST['dob']!=""){
+				$_POST['dob'] = substr($_POST['dob'],6,4)."-".substr($_POST['dob'],3,2)."-".substr($_POST['dob'],0,2);
+			}
+			if($_POST['due_date']!=""){
+				$_POST['due_date'] = substr($_POST['due_date'],6,4)."-".substr($_POST['due_date'],3,2)."-".substr($_POST['due_date'],0,2);
+			}
+			if($_POST['commencement_date']!=""){
+				$_POST['commencement_date'] = substr($_POST['commencement_date'],6,4)."-".substr($_POST['commencement_date'],3,2)."-".substr($_POST['commencement_date'],0,2);
+			}
+			if($_POST['completion_date']!=""){
+				$_POST['completion_date'] = substr($_POST['completion_date'],6,4)."-".substr($_POST['completion_date'],3,2)."-".substr($_POST['completion_date'],0,2);
+			}
+			if($_POST['form_date']!=""){
+				$_POST['form_date'] = substr($_POST['form_date'],6,4)."-".substr($_POST['form_date'],3,2)."-".substr($_POST['form_date'],0,2);
+			}
+			
 			
 			$this->Form_model->addForm($_POST);
 			
@@ -150,7 +173,7 @@ class Form extends CI_Controller {
 		
 		$data['active'] = 'online';
 		
-		$per_page = 30;
+		$per_page = 250;
 		$data['per_page'] = $per_page;
 		
 		$limit = $per_page;
@@ -223,6 +246,53 @@ class Form extends CI_Controller {
 		}
 	}
 	
+	
+	
+	
+	
+	public function viewRecentSignup($creator_id)			// new function added by Hein Htet Aung August 3, 2016
+	{	
+		$data['title'] = 'Online Signup Record';
+		$data['subtitle'] = 'Signup Records';
+		
+		$data['active'] = 'online';
+		
+		$per_page = 250;
+		$data['per_page'] = $per_page;
+		
+		$limit = $per_page;
+		$offset = 0;
+		
+		$search = null;
+		if (isset($_GET['search']) && $_GET['search'] != '') {
+			$search = $_GET['search'];
+		}
+
+		if (isset($_GET['p']) && $_GET['p'] != '') {
+			$offset = ($_GET['p'] -1) * $per_page;
+		}
+		else if (isset($_GET['p']) && $_GET['p'] == '')
+			$offset = 0;
+			
+		$qStr = $_GET;
+		if (isset($qStr['p']))
+			unset($qStr['p']);
+		
+		$this->load->model('Condition_model');
+		$data['forms'] = $this->Condition_model->checksignup_within3day($creator_id);
+		
+		$config['base_url'] = base_url().'forms/editRecord?'.http_build_query($qStr);
+		$config['total_rows'] = count($this->Form_model->getAllForms(null,null, null, $search));
+		$config['per_page'] = $per_page; 
+		$config['use_page_numbers'] = TRUE;
+		$config['query_string_segment'] = 'p';
+		
+		$config['page_query_string'] = TRUE;
+		$this->pagination->initialize($config); 
+		
+// 		$data['invoices'] = $this->Invoice_model->getAllInvoice();
+		$this->load->view('form/list', $data);
+	}
 	
 
 }

@@ -82,11 +82,16 @@ $(document).ready(function() {
               <h3 style="text-align:center"></h3>
 			<form method="post" action="">
 			<table class="form-table" style="width:100%">
+				<?php 
+				if ($this->session->userdata('user_type') == 'admin'){	// new code edit by Hein Htet Aung Aug 3
+				?>
 				<tr>
 					<td colspan="2" ><label>Booking Ref. Number:</label></td>
 					<td colspan="4"><input type="text" name="booking_ref_no" value="<?php echo isset($booking_ref_no) ? set_value('booking_ref_no', $booking_ref_no) : set_value('booking_ref_no', '');?>"></td>
 				</tr>
-				
+				<?php
+				}
+				?>
 				<tr>
 					<td colspan="2" ><label>Name of Funder:</label></td>
 					<td colspan="4"><input type="text" name="name" value="<?php echo isset($name) ? set_value('name', $name) : set_value('name', '');?>"></td>

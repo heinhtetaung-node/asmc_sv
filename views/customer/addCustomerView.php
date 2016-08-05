@@ -48,91 +48,91 @@ $this->load->view('sidebar');
  -->
  					<input type="hidden" name="customer_project" value="<?php echo set_value('customer_project', $customer_project);?>" class="form-control">
 					<div class="form-group">
-					  <label class="col-sm-3 control-label">Customer name</label>
+					  <label class="col-sm-3 control-label">Funder name</label>
 					  <div class="col-sm-9">
 					  	<?php echo form_error('customer_name');?>
 						<input type="text" name="customer_name" value="<?php echo set_value('customer_name', $customer_name);?>" class="form-control">
 					  </div>
 					</div>
 					<div class="form-group">
-					  <label class="col-sm-3 control-label">Customer user name (login account)</label>
+					  <label class="col-sm-3 control-label">Funder user name (login account)</label>
 					  <div class="col-sm-9">
 					  	<?php echo form_error('customer_username');?>
 						<input type="text" name="customer_username" value="<?php echo set_value('customer_username', $customer_username);?>" class="form-control">
 					  </div>
 					</div>
 					<div class="form-group">
-					  <label class="col-sm-3 control-label">Customer email</label>
+					  <label class="col-sm-3 control-label">Funder email</label>
 					  <div class="col-sm-9">
 					 	 <?php echo form_error('customer_email');?>
 						<input type="text" name="customer_email" value="<?php echo set_value('customer_email', $customer_email);?>" class="form-control">
 					  </div>
 					  </div>
 					  <div class="form-group">
-					  <label class="col-sm-3 control-label">Customer password</label>
+					  <label class="col-sm-3 control-label">Funder password</label>
 					  <div class="col-sm-9">
 					  	 <?php echo form_error('customer_pass');?>
 						<input type="password" name="customer_pass" value="<?php echo set_value('customer_pass', $customer_pass);?>" autocomplete="off" class="form-control">
 					  </div>
 					  </div>
 					  <div class="form-group">
-					  <label class="col-sm-3 control-label">Customer NRIC</label>
+					  <label class="col-sm-3 control-label">Funder NRIC</label>
 					  <div class="col-sm-9">
 					  	 <?php echo form_error('customer_nric');?>
 						<input type="text" name="customer_nric" value="<?php echo set_value('customer_nric', $customer_nric);?>" autocomplete="off" class="form-control">
 					  </div>
 					  </div>
 					  <div class="form-group">
-					  <label class="col-sm-3 control-label">Customer mobile</label>
+					  <label class="col-sm-3 control-label">Funder mobile</label>
 					  <div class="col-sm-9">
 					  	 <?php echo form_error('customer_mobile');?>
 						<input type="text" name="customer_mobile" value="<?php echo set_value('customer_mobile', $customer_mobile);?>" autocomplete="off" class="form-control">
 					  </div>
 					  </div>
 					  <div class="form-group">
-					  <label class="col-sm-3 control-label">Customer address</label>
+					  <label class="col-sm-3 control-label">Funder address</label>
 					  <div class="col-sm-9">
 					  	 <?php echo form_error('customer_addr');?>
 						<textarea rows="4" name="customer_addr" autocomplete="off" class="form-control"><?php echo set_value('customer_addr', $customer_addr);?></textarea>
 					  </div>
 					  </div>
 					   <div class="form-group">
-					  <label class="col-sm-3 control-label">Customer address 2</label>
+					  <label class="col-sm-3 control-label">Funder address 2</label>
 					  <div class="col-sm-9">
 					  	 <?php echo form_error('customer_addr2');?>
 						<textarea rows="4" name="customer_addr2"  autocomplete="off" class="form-control"><?php echo set_value('customer_addr2', $customer_addr2);?></textarea>
 					  </div>
 					  </div>
 					  <div class="form-group">
-					  <label class="col-sm-3 control-label">Customer D.O.B <br/>(YYYY-mm-dd)</label>
+					  <label class="col-sm-3 control-label">Funder D.O.B <br/>(YYYY-mm-dd)</label>
 					  <div class="col-sm-9">
 					  	 <?php echo form_error('customer_dob');?>
 						<input type="text" name="customer_dob" value="<?php echo set_value('customer_dob', $customer_dob);?>" autocomplete="off" class="form-control">
 					  </div>
 					  </div>
 					  <div class="form-group">
-						<label class="col-sm-3 control-label">Customer Bank Name</label>
+						<label class="col-sm-3 control-label">Funder Bank Name</label>
 					  	<div class="col-sm-9">
 					  		 <?php echo form_error('customer_bank_name');?>
 						<input type="text" name="customer_bank_name" value="<?php echo set_value('customer_bank_name', $customer_bank_name);?>" autocomplete="off" class="form-control">
 					  	</div>
 					  </div>
 					   <div class="form-group">
-						<label class="col-sm-3 control-label">Customer Bank Account No.</label>
+						<label class="col-sm-3 control-label">Funder Bank Account No.</label>
 					  	<div class="col-sm-9">
 					  		 <?php echo form_error('customer_bank_acc');?>
 						<input type="text" name="customer_bank_acc" value="<?php echo set_value('customer_bank_acc', $customer_bank_acc);?>" autocomplete="off" class="form-control">
 					  	</div>
 					  </div>
 					   <div class="form-group">
-						<label class="col-sm-3 control-label">Customer Bank Account Type</label>
+						<label class="col-sm-3 control-label">Funder Bank Account Type</label>
 					  	<div class="col-sm-9">
 					  		 <?php echo form_error('customer_acc_type');?>
 						<input type="text" name="customer_acc_type" value="<?php echo set_value('customer_acc_type', $customer_acc_type);?>" autocomplete="off" class="form-control">
 					  	</div>
 					  </div>
 					  <div class="form-group">
-						<label class="col-sm-3 control-label">Customer Bank Swift Code</label>
+						<label class="col-sm-3 control-label">Funder Bank Swift Code</label>
 					  	<div class="col-sm-9">
 					  		 <?php echo form_error('customer_bank_swift');?>
 						<input type="text" name="customer_bank_swift" value="<?php echo set_value('customer_bank_swift', $customer_bank_swift);?>" autocomplete="off" class="form-control">

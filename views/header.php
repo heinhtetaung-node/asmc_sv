@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="myapp">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -28,5 +28,21 @@
 <script src="<?php echo base_url();?>js/jquery-2.0.2.min.js"></script> 
 <script src="<?php echo base_url();?>jquery-ui/jquery-ui.min.js"></script> 
 	<script type="text/javascript" src="<?php echo base_url();?>js/signature_pad.min.js"></script>
+	
+
+<!-- new code added Hein Htet Aung Aug 1, 2016({ -->
+<link href="<?php echo base_url();?>css/hha_custom.css" rel="stylesheet">
+<script type="text/javascript" src="<?php echo base_url();?>angularjs/angular.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url();?>angularjs/ui-bootstrap-tpls-0.2.0.js"></script>
+<script type="text/javascript" src="<?php echo base_url();?>angularjs/myapp/config.js"></script>
+<script type="text/javascript" src="<?php echo base_url();?>angularjs/myapp/services.js"></script>
+<script type="text/javascript" src="<?php echo base_url();?>angularjs/myapp/controllers.js"></script>
+<script type="text/javascript" src="<?php echo base_url();?>angularjs/jspdf.js"></script>
+<script type="text/javascript" src="<?php echo base_url();?>angularjs/jquery.base64.js"></script>
+<script type="text/javascript" src="<?php echo base_url();?>angularjs/base64.js"></script>
+<script type="text/javascript" src="<?php echo base_url();?>angularjs/sprintf.js"></script>
+<script type="text/javascript" src="<?php echo base_url();?>angularjs/myapp/cus_tableexport.js"></script>
+<!-- }); -->
+
 </head>
 <body class="dark-theme">

@@ -59,10 +59,13 @@
 <!--       <li class="<?php if ($active =='form') echo 'active';?> sub-menu dcjq-parent-li"> <a href="javascript:;" class="<?php if ($active =='form') echo 'active';?> dcjq-parent">Online Forms</a> -->
 <!--         <ul class="sub"> -->
           <li  class="<?php if ($active =='commission') echo 'active';?> sub-menu dcjq-parent-li"><a href="<?php echo base_url();?>form" class="<?php if ($active =='commission') echo 'active';?> dcjq-parent">Signup Form</a></li>
-<!--           <li  class="<?php if ($active =='commission') echo 'active';?> sub-menu dcjq-parent-li"><a href="<?php echo base_url();?>form/viewRecords" class="<?php if ($active =='commission') echo 'active';?> dcjq-parent">View Records</a></li> -->
+<!--           <li  class="<?php if ($active =='commission') echo 'active';?> sub-menu dcjq-parent-li"><a href="<?php echo base_url();?>form/viewRecords" class="<?php if ($active =='commission') echo 'active';?> dcjq-parent">View Records</a></li> 
            <li><a href="#"><br/><br/></a></li>
+
 <!--         </ul> -->
 <!--       </li> -->
+
+			<?php $this->load->view('common/common_view_records'); ?> <!-- new code added by Hein Htet Aung -->
       <?php }?>
       
     </ul><!--/nav-accordion sidebar-menu--> 

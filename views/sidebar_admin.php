@@ -51,10 +51,10 @@
       </li>
       <?php
       if ($this->session->userdata('user_type') == 'admin') {?>
-      <li class="<?php if ($active =='customer') echo 'active';?> sub-menu dcjq-parent-li"> <a href="javascript:;" class="<?php if ($active =='customer') echo 'active';?> dcjq-parent">Customer</a>
+      <li class="<?php if ($active =='customer') echo 'active';?> sub-menu dcjq-parent-li"> <a href="javascript:;" class="<?php if ($active =='customer') echo 'active';?> dcjq-parent">Funder</a>
         <ul class="sub">
-          <li><a href="<?php echo base_url();?>customer"><i class="fa fa-angle-right"></i>Customer Lists</a></li>
-          <li><a href="<?php echo base_url();?>customer/addCustomer"><i class="fa fa-angle-right"></i>Add Customer</a></li>
+          <li><a href="<?php echo base_url();?>customer"><i class="fa fa-angle-right"></i>Funder Lists</a></li>
+          <li><a href="<?php echo base_url();?>customer/addCustomer"><i class="fa fa-angle-right"></i>Add Funder</a></li>
           
         </ul>
       </li>

@@ -39,7 +39,7 @@ class Admin extends CI_Controller {
 		
 		$data['active'] = 'admin';
 		
-		$per_page = 20;
+		$per_page = 250;
 		$data['per_page'] = $per_page;
 		
 		$limit = $per_page;

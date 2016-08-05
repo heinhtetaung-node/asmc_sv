@@ -41,7 +41,7 @@ class Agent extends CI_Controller {
 		
 		$data['active'] = 'agent';
 		
-		$per_page = 20;
+		$per_page = 250;
 		$data['per_page'] = $per_page;
 		
 		$limit = $per_page;

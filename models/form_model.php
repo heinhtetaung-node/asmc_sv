@@ -84,7 +84,11 @@ class Form_model extends CI_Model {
 			$where .= count($where) == 1 ? $whereArr[0] : join(' and ', $whereArr);
 		}
 		
-		$sql = "select * from forms $where $filter";
+		// $sql = "select * from forms $where $filter";	// old query
+		
+		// $sql = "select forms.*, ( SELECT COUNT(formid) FROM invoice where invoice.formid=forms.f_id ) as inv_status from forms $where $filter"; //new query by Hein Htet Aung at Aug 1 2016
+		
+		$sql = "select forms.*, ( SELECT COUNT(formid) FROM invoice where invoice.formid=forms.f_id ) as inv_status from forms $where $filter"; //new query by Hein Htet Aung at Aug 1 2016
 		return $this->fetchResult($sql, false);
 	}
 }
