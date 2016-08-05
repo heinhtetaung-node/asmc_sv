@@ -107,8 +107,8 @@ function confirmDelete() {
 							<td>{{ convertToDate(datas.m_login_date) | date:'dd-MMM-yyyy h:mma' }}</td>
 							<td>{{ convertToDate(datas.m_created_date) | date:'dd-MMM-yyyy h:mma' }}</td>
 							<td>
-								<a href="<?php echo base_url(); ?>admin/editManager/?id={{datas.m_id}}">Edit</a> | 
-								<a href="<?php echo base_url(); ?>admin/deleteManager/?id={{datas.m_id}}" onclick="return confirmDelete();">Delete</a>
+								<a href="<?php echo base_url(); ?>manager/editManager/?id={{datas.m_id}}">Edit</a> | 
+								<a href="<?php echo base_url(); ?>manager/deleteManager/?id={{datas.m_id}}" onclick="return confirmDelete();">Delete</a>
 							</td>
 						</tr>
 						
