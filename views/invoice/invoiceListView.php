@@ -128,7 +128,7 @@ function confirmDelete() {
 					
 					<tr id="{{datas.dr_id}}" tr-id="{{datas.dr_id}}" ng-repeat="datas in filtered = (datas | filter:search | orderBy : sortField :reverse |  startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit) track by $index">
 						<td>{{ datas.inv_no }}</td>
-						<td>{{ datas.inv_date | date:'dd-MMM-yyyy' }}</td>
+						<td class="datetd">{{ datas.inv_date | date:'dd-MMM-yyyy' }}</td>
 						<td>{{ datas.inv_total | currency }}</td>
 						<td class="datetd">{{ convertToDate(datas.payout.min) | date:'dd-MMM-yyyy' }}</td>
 						<td class="datetd">{{ convertToDate(datas.payout.max) | date:'dd-MMM-yyyy' }}</td>

@@ -69,7 +69,9 @@ function confirmDelete() {
              	<table class="table table-bordered" id="ang_table">
 					<thead>
 					<tr>
+					<?php if($this->session->userdata('user_type')=="admin"){ ?>
 						<th ng-click="sortField = 'booking_ref_no'; reverse = !reverse"><a href="">Booking Ref No.</th>
+					<?php } ?>
 						<th ng-click="sortField = 'form_date'; reverse = !reverse"><a href="">Date</th>
 						<th ng-click="sortField = 'name'; reverse = !reverse"><a href="">Name</th>
 						<th ng-click="sortField = 'nric'; reverse = !reverse"><a href="">NRIC</th>
@@ -115,7 +117,9 @@ function confirmDelete() {
 					// }
 					?>
 						<tr id="{{datas.dr_id}}" tr-id="{{datas.dr_id}}" ng-repeat="datas in filtered = (datas | filter:search | orderBy : sortField :reverse |  startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit) track by $index">
+						<?php if($this->session->userdata('user_type')=="admin"){ ?>
 							<td>{{ datas.booking_ref_no }}</td>
+						<?php } ?>
 							<td class="datetd">{{ convertToDate(datas.form_date) | date:'dd-MMM-yyyy' }}</td>
 							<td>{{ datas.name }}</td>
 							<td>{{ datas.nric }}</td>
