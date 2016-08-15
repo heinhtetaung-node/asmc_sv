@@ -132,5 +132,15 @@ class Agent_model extends CI_Model {
 		}
 		return array();
 	}
+	
+	function update_agentstatus($active, $agent_id){	// new code added by Hein Htet Aung Aug 07, 2016
+		$sql = sprintf("
+				UPDATE `agent` SET `active` = '%d' WHERE `agent_id` = %d;
+				",$active, $agent_id
+				);
+		
+		$Q = $this->db->query($sql);
+		return $this->db->affected_rows();			
+	}
 }
 									

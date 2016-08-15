@@ -68,14 +68,17 @@ function confirmDelete() {
 						<th>No.</th>
 						<th ng-click="sortField = 'agent_name'; reverse = !reverse"><a href="">Name</a></th>
 						<th ng-click="sortField = 'agent_email'; reverse = !reverse"><a href="">Email</a></th>
+						<?php if ($this->session->userdata('user_type') != 'manager') { ?>
 						<th ng-click="sortField = 'agent_code'; reverse = !reverse"><a href="">Agent Code</a></th>
 						<th ng-click="sortField = 'm_name'; reverse = !reverse"><a href="">Manager</a></th>
+						<?php } ?>
 						<th ng-click="sortField = 'agent_login_date'; reverse = !reverse"><a href="">Last Login</a></th>
 						<th ng-click="sortField = 'agent_created_date'; reverse = !reverse"><a href="">Created Date</a></th>
+						<!--<th>Status</th>-->
 						<?php
-						if ($this->session->userdata('user_type') == 'admin') {?>
+						//if ($this->session->userdata('user_type') == 'admin') {?>
 							<th>Action</th>
-						<?php }?>
+						<?php //}?>
 					</tr>
 					</thead>
 					<tbody ng-init="getdatas(<?php echo htmlspecialchars(json_encode($agents,JSON_NUMERIC_CHECK)); ?>)">
@@ -106,18 +109,28 @@ function confirmDelete() {
 						// }
 					// }
 					?>
-						<tr id="{{datas.dr_id}}" tr-id="{{datas.dr_id}}" ng-repeat="datas in filtered = (datas | filter:search | orderBy : sortField :reverse |  startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit) track by $index">
+						<tr id="{{datas.agent_id}}" tr-id="{{datas.agent_id}}" ng-repeat="datas in filtered = (datas | filter:search | orderBy : sortField :reverse |  startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit) track by $index">
 							<td>{{ $index+1 }}</td>
 							<td>{{ datas.agent_name }}</td>
 							<td>{{ datas.agent_email }}</td>
+							<?php if ($this->session->userdata('user_type') != 'manager') { ?>
 							<td>{{ datas.agent_code }}</td>
 							<td>{{ datas.m_name }}</td>
+							<?php } ?>
 							<td>{{ convertToDate(datas.agent_login_date) | date:'dd-MMM-yyyy h:mma' }}</td>
 							<td>{{ convertToDate(datas.agent_created_date) | date:'dd-MMM-yyyy h:mma' }}</td>
+							<!--<td>
+								<input class="status" type="checkbox" checked='{{ (datas.active==1)? "checked" : "" }}' data-size="mini" data-toggle="toggle" data-on="Active" data-off="Disable">
+							</td>-->
+							
 							<td>
-								<a href="<?php echo base_url(); ?>agent/editAgent/?id={{datas.agent_id}}">Edit</a> | 
+								<a href="<?php echo base_url(); ?>agent/editAgent/?id={{datas.agent_id}}">Edit</a>  
+								<?php if ($this->session->userdata('user_type') == 'admin') { ?>
+								|
 								<a href="<?php echo base_url(); ?>agent/deleteAgent/?id={{datas.agent_id}}" onclick="return confirmDelete();">Delete</a>
+								<?php } ?>
 							</td>
+							
 						</tr>
 					</tbody>
 				</table>

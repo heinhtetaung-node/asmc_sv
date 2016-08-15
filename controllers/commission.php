@@ -50,8 +50,16 @@ class Commission extends CI_Controller {
 		$offset = 0;
 		
 		$search = null;
+		$agent_search = null;
+		$funder_search = null;
 		if (isset($_GET['search']) && $_GET['search'] != '') {
 			$search = $_GET['search'];
+		}
+		if (isset($_GET['agent_search']) && $_GET['agent_search'] != '') {
+			$agent_search = $_GET['agent_search'];
+		}
+		if (isset($_GET['funder_search']) && $_GET['funder_search'] != '') {
+			$funder_search = $_GET['funder_search'];
 		}
 
 		if (isset($_GET['p']) && $_GET['p'] != '') {
@@ -66,6 +74,15 @@ class Commission extends CI_Controller {
 			
 		$data['percent'] = 0;
 	
+		// Edited by Hein Htet Aung ({ 
+		if ($this->session->userdata('user_type') != 'agent') {
+			$data['agents'] = $this->Agent_model->getAllAgent();
+		}
+		if ($this->session->userdata('user_type') == 'agent') {
+			$data['funders'] = $this->Customer_model->getAllCustomer();
+		}
+		// });
+		
 		if ($this->session->userdata('user_type') == 'admin') {
 			$group = 'admin';
 			$id = $this->session->userdata('admin')->{'admin_id'};
@@ -84,12 +101,12 @@ class Commission extends CI_Controller {
 			$data['group'] = $group;
 			
 // 		print_r($data['percent']);exit;
-		$data['invoices'] = $this->Commision_model->getAllInvoice($group, $id, $limit, $offset, $search);
+		$data['invoices'] = $this->Commision_model->getAllInvoice_h($group, $id, $limit, $offset, $search, $agent_search, $funder_search);
 		// echo '<pre>';
 // 		print_r($data['invoices']);exit;
 // 		
 		$config['base_url'] = base_url().'commission?'.http_build_query($qStr);
-		$config['total_rows'] = count($this->Commision_model->getAllInvoice($group, $id, null, null, $search));
+		$config['total_rows'] = count($this->Commision_model->getAllInvoice_h($group, $id, null, null, $search, $agent_search, $funder_search));
 		$config['per_page'] = $per_page; 
 		$config['use_page_numbers'] = TRUE;
 		$config['query_string_segment'] = 'p';

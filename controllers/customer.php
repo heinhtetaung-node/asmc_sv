@@ -88,23 +88,27 @@ class Customer extends CI_Controller {
 			$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 		
 			//validate
-			$this->form_validation->set_rules('customer_name', 'Customer name', 'required');
-			$this->form_validation->set_rules('customer_username', 'Customer user name', 'required');
-// 			$this->form_validation->set_rules('customer_email', 'Customer email', 'required|valid_email|callback_email_check');
-			$this->form_validation->set_rules('customer_pass', 'Customer password', 'required');
-			$this->form_validation->set_rules('customer_nric', 'Customer NRIC', 'required');
-			$this->form_validation->set_rules('customer_mobile', 'Customer mobile', 'required|min_length[8]');
+			$this->form_validation->set_rules('customer_name', 'Funder name', 'required');
+			$this->form_validation->set_rules('customer_username', 'Funder user name', 'required|is_unique[customer.customer_username]');
+ 			$this->form_validation->set_rules('customer_email', 'Funder email', 'required|valid_email|callback_email_check');
+//			$this->form_validation->set_rules('customer_pass', 'Customer password', 'required');
+			$this->form_validation->set_rules('customer_nric', 'Funder NRIC', 'required');
+			$this->form_validation->set_rules('customer_mobile', 'Funder mobile', 'required|min_length[8]');
 			
 			if ($this->form_validation->run() == FALSE)
 			{
 				
 			}
 			else {
+				
+				$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*_";
+				$password = substr( str_shuffle( $chars ), 0, 8 );
+				
 				$Customer_data['customer_name'] = $_POST['customer_name'];
 				$Customer_data['customer_username'] = $_POST['customer_username'];
 				$Customer_data['customer_project'] = $_POST['customer_project'];
 				$Customer_data['customer_email'] = $_POST['customer_email'];
-				$Customer_data['customer_pass'] = md5($_POST['customer_pass']);
+				$Customer_data['customer_pass'] = md5($password);
 				$Customer_data['customer_mobile'] = $_POST['customer_mobile'];
 				$Customer_data['customer_nric'] = $_POST['customer_nric'];
 				$Customer_data['customer_addr'] = $_POST['customer_addr'];
@@ -117,7 +121,16 @@ class Customer extends CI_Controller {
 				$Customer_data['customer_created_date'] = date('Y-m-d H:i:s');
 				
 				$this->Customer_model->addCustomer($Customer_data);
-				$this->session->set_userdata('success', 'New Customer account added');
+				
+				$res=$this->Customer_model->sendFunderAutoGeneratePwEmail($_POST, $password);
+				
+				if($res=="Message has been sent."){
+					$this->session->set_userdata('success', 'New Customer account added <br> The password is '.$password.' and We have already sent password to email.');
+				}else{
+					echo $res;
+					exit;
+				}
+				
 				redirect('customer');
 			}
 		}

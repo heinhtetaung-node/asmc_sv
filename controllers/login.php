@@ -101,7 +101,7 @@ class Login extends CI_Controller {
 				 		redirect('profile/?pid='.$customer->{"customer_id"});
 				 	}
 				 	else {
-				 		$this->session->set_userdata('error', 'Customer email or password incorrect');
+				 		$this->session->set_userdata('error', 'Funder email or password incorrect');
 				 	}
 				}
 				else if ($_POST['group'] == 5) {
@@ -113,7 +113,7 @@ class Login extends CI_Controller {
 				 		redirect('manager');
 				 	}
 				 	else {
-				 		$this->session->set_userdata('error', 'Customer email or password incorrect');
+				 		$this->session->set_userdata('error', 'Director email or password incorrect');
 				 	}
 				}
 			}

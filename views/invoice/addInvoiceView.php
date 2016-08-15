@@ -161,7 +161,7 @@ $(".datepicker").datepicker({dateFormat:'dd-mm-yy'});
 					  </div>
 					</div>
 					<div class="form-group">
-					  <label class="col-sm-3 control-label">Customer:</label>
+					  <label class="col-sm-3 control-label">Funder:</label>
 					  <div class="col-sm-9">
 					  <?php echo form_error('customer_id');?>
 					  	<select name="customer_id">

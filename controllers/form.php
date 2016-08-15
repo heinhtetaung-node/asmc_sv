@@ -39,14 +39,21 @@ class Form extends CI_Controller {
 		$this->load->model('Agent_model');
 	}
 	
+	public function getallcustomers(){
+		echo json_encode($this->Customer_model->getAllCustomer());
+	}
+	
 	public function index()
 	{	
+		$condition="";
 		$data['title'] = WEB_TITLE;
 		$data['active'] = 4;
 		
 		$data['managers'] = $this->Manager_model->getAllManager();
 		$data['directors'] = $this->Director_model->getAllDirector();
 		$data['agents'] = $this->Agent_model->getAllAgent();
+		$data['funders'] = $this->Customer_model->getAllCustomer();
+		
 		$data['countries'] = $this->Form_model->getCountry();
 		
 		if (isset($_POST['submit'])) {
@@ -57,11 +64,20 @@ class Form extends CI_Controller {
 				$cu_id = $existing_cus->{'customer_id'};
 			}
 			else {
+				$condition="condition1";
+				// echo "<pre>";
+				// var_dump($_POST);
+				// echo "</pre>";
+				
+			
 				//add customer
+				$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*_";
+				$password = substr( str_shuffle( $chars ), 0, 8 );
+				
 				$c['customer_name'] = $_POST['name'];
 				$c['customer_username'] = strtolower(trim($_POST['name']));
 				$c['customer_email'] = $_POST['email'];
-				$c['customer_pass'] = md5('coal123');
+				$c['customer_pass'] = md5($password);
 				$c['customer_nric'] = $_POST['nric'];
 				$c['customer_dob'] = date('Y-m-d', strtotime($_POST['dob']));
 				$c['customer_addr'] = $_POST['address'];
@@ -71,7 +87,31 @@ class Form extends CI_Controller {
 				$c['customer_bank_acc'] = $_POST['bank_acc_no'];
 // 				$c['customer_bank_type'] = $_POST['bank_type'];
 				$c['customer_created_date'] = date('Y-m-d H:i:s');
+				
+				// if($condition=="condition1"){
+					// $res=$this->sendNewCustomerEmail($c, $_POST);
+					// if($res!="Message has been sent."){
+						// echo $res;
+					// }
+				// }
+				// exit;
+				
+				//echo $password; echo "<br>"; echo $c['customer_pass']; //exit;
 				$cu_id = $this->Customer_model->addCustomer($c);
+				
+				if($cu_id){
+					if($c['customer_email']!=""){
+						$res=$this->Customer_model->sendFunderAutoGeneratePwEmail($c, $password);
+						if($res!="Message has been sent."){
+							echo $res;
+						}
+					}
+					
+					$res=$this->sendNewCustomerEmail($c, $_POST);
+					if($res!="Message has been sent."){
+						echo $res;
+					}
+				}
 			}
 			
 			$_POST['cu_id'] = $cu_id;
@@ -89,11 +129,6 @@ class Form extends CI_Controller {
 			else if ($this->session->userdata('user_type') == 'director')
 				$_POST['creator_id'] = $this->session->userdata('director')->{'dr_id'};
 			
-			//echo "<pre>";
-			//var_dump($_POST);
-			//echo "</pre>";
-			
-			//exit;
 			
 			// Date change to valid Edit by Hein Htet Aung August 3 
 			if($_POST['dob']!=""){
@@ -111,7 +146,24 @@ class Form extends CI_Controller {
 			if($_POST['form_date']!=""){
 				$_POST['form_date'] = substr($_POST['form_date'],6,4)."-".substr($_POST['form_date'],3,2)."-".substr($_POST['form_date'],0,2);
 			}
+			$condition="condition2";
+			// echo "condition2";
+			// echo "<pre>";
+			// var_dump($_POST);
+			// echo "</pre>";
 			
+			//exit;
+			
+			unset($_POST['director_email']);
+			unset($_POST['manager_email']);
+			unset($_POST['agent_email']);
+			
+			// echo "condition2";
+			// echo "<pre>";
+			// var_dump($_POST);
+			// echo "</pre>";
+			
+			// exit;
 			
 			$this->Form_model->addForm($_POST);
 			
@@ -136,6 +188,7 @@ class Form extends CI_Controller {
 			
 			$email = $this->load->view('form/email', $emailData, true);
 			$this->email($email);
+			
 		}
 		$this->load->view('form/index', $data);
 	}
@@ -165,6 +218,54 @@ class Form extends CI_Controller {
 		$this->email->subject($subject);
 		$this->email->message($message);
 // 		$this->email->send();
+	}
+	
+	function sendNewCustomerEmail($c, $post){	//added by Hein Htet Aung Aug 11,2016
+	
+		//echo "dddd";
+		$subject = 'Sign Up Form submit by New Customer';
+		$to = "";
+		if($post['director_email']!=""){
+			$to=$to.$post['director_email'];
+		}
+		if($post['manager_email']!=""){
+			$to=$to.",".$post['manager_email'];
+		}
+		if($post['agent_email']!=""){
+			$to=$to.",".$post['agent_email'];
+		}
+		//echo $to;
+		$message="<h1>New Customer ".$c['customer_name']." created new sign up Record.</h1>";
+		
+		$name = $c['customer_name'];
+		$from = 'testmail@sgdatacrm.com';
+		
+		$config['protocol'] = 'smtp';
+		$config['smtp_host'] = SMTP_HOST;
+		$config['smtp_port'] = SMTP_PORT; 
+		$config['smtp_crypto'] = SMTP_CRYPTO;
+		$config['smtp_user'] = SMTP_USER;
+		$config['smtp_pass'] = SMTP_PASS;
+		$config['charset'] = 'utf-8';
+		$config['mailtype'] = 'html';
+		$config['newline'] = "\r\n";
+		
+		$this->load->library('email'); 
+		$this->email->from($from, 'ASMC CRM System');
+		$this->email->to($to, $name);
+		$this->email->subject($subject);
+		$this->email->message($message); 
+		$this->email->set_mailtype("html");
+		try{
+			$this->email->send();
+			$res='Message has been sent.';
+			return $res;
+		}catch(Exception $e){
+			$res=$e->getMessage();
+		}
+		
+		//echo $res; exit;
+		
 	}
 	
 	function viewRecords() {
@@ -232,7 +333,10 @@ class Form extends CI_Controller {
 				$this->session->set_userdata('success', 'Form updated');
 			
 			}
-			
+			$this->load->model("Condition_model");
+			if($this->session->userdata('user_type')=="admin"){		// New code added by Hein Htet Aung August 06, 2016 to check admin edit permission by cretor.
+				$data['permissionrecord']=$this->Condition_model->checkenable_after3day($_GET['id']);
+			}
 			$this->load->view('form/editForm', $data);
 		}
 	}
@@ -294,7 +398,14 @@ class Form extends CI_Controller {
 		$this->load->view('form/list', $data);
 	}
 	
-
+	public function update_editpermission(){ // New code added by Hein Htet Aung August 06, 2016 to check admin edit permission by cretor.
+		$data = json_decode(file_get_contents("php://input"));     
+		
+		$this->load->model('Condition_model');
+		$res=$this->Condition_model->update_editpermission($data->f_id, $data->edit_permission);
+		
+		echo json_encode($res);
+	}
 }
 
 /* End of file welcome.php */

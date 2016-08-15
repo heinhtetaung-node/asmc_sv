@@ -98,5 +98,83 @@ class Customer_model extends CI_Model {
 		$sql = "update customer set active = 0 where customer_id = $id";
 		$this->db->query($sql);
 	}	
+	
+	function sendFunderAutoGeneratePwEmail($c, $password){			
+		// ------------ Sample email send --------------------------
+		// $to = "heinhtetaung.sglife@gmail.com";
+		// $subject = "Project Detail ";
+
+		// $message = "hien ei";
+
+		// // Always set content-type when sending HTML email
+		// $headers = "MIME-Version: 1.0" . "\r\n";
+		// $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+
+		// // More headers
+		// $headers .= 'From: <fancystar7@gmail.com>' . "\r\n";
+		// $headers .= 'Cc: heinhtetaung.sglife@gmail.com' . "\r\n";
+
+		// mail($to,$subject,$message,$headers);
+		// ------------------------------------------------------------	
+
+		// ------------ email send with smtp --------------------------
+		// $config['protocol'] = 'smtp';
+		// $config['smtp_host'] = 'cpanel2.sgdatahub.com';
+		// $config['smtp_port'] = '465'; 
+		// $config['smtp_crypto'] = 'tls';
+		// $config['smtp_user'] = 'testmail@sgdatacrm.com';
+		// $config['smtp_pass'] = 'testmail';
+		// $config['charset'] = 'utf-8';
+		// $config['mailtype'] = 'html';
+		// $config['newline'] = "\r\n";
+
+		// $this->load->library('email'); 
+		// $this->email->from('fancystar7@gmail.com', 'Sender Name');
+		// $this->email->to('heinhtetaung.sglife@gmail.com','Recipient Name');
+		// $this->email->subject('Your Subject');
+		// $this->email->message('Your Message'); 
+		// try{
+			// $this->email->send();
+			// echo 'Message has been sent.';
+		// }catch(Exception $e){
+			// echo $e->getMessage();
+		// }
+		// ----------------------------------------------------------------
+		
+		$config['protocol'] = 'smtp';
+		$config['smtp_host'] = SMTP_HOST;
+		$config['smtp_port'] = SMTP_PORT; 
+		$config['smtp_crypto'] = SMTP_CRYPTO;
+		$config['smtp_user'] = SMTP_USER;
+		$config['smtp_pass'] = SMTP_PASS;
+		$config['charset'] = 'utf-8';
+		$config['mailtype'] = 'html';
+		$config['newline'] = "\r\n";
+		
+		$subject = 'Registration Success';
+		$to = $c['customer_email'];
+		$name = $c['customer_name'];
+		$from = 'testmail@sgdatacrm.com';
+		
+		$message="<h1>Your Registration for ASMC CRM system Funder account success.</h1> <h2>Please use this username and password to login</h2>
+					<h3>username: ".$c['customer_username']."</h3>"."
+					<h3>password: ".$password."</h3>";
+		
+		$this->load->library('email'); 
+		$this->email->from($from, 'ASMC CRM System');
+		$this->email->to($to, $name);
+		$this->email->subject($subject);
+		$this->email->message($message); 
+		$this->email->set_mailtype("html");
+		try{
+			$this->email->send();
+			$res='Message has been sent.';
+		}catch(Exception $e){
+			$res=$e->getMessage();
+		}
+		
+		//echo $res; exit;
+		return $res;
+	}
 }
 									

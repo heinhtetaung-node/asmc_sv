@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="myapp">
+<html lang="en" ng-app="app">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -32,25 +32,14 @@
 
 <!-- new code added Hein Htet Aung Aug 1, 2016({ -->
 <link href="<?php echo base_url();?>css/hha_custom.css" rel="stylesheet">
+<link href="<?php echo base_url();?>angularjs/autocomplete/style/autocomplete.css" rel="stylesheet">
+<link href="<?php echo base_url();?>angularjs/autocomplete/style/style.css" rel="stylesheet" type="text/css">
+
 <script type="text/javascript" src="<?php echo base_url();?>angularjs/angular.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url();?>angularjs/ui-bootstrap-tpls-0.2.0.js"></script>
-<script type="text/javascript" src="<?php echo base_url();?>angularjs/angular-filter.min.js"></script>
-<script type="text/javascript" src="<?php echo base_url();?>angularjs/myapp/config.js"></script>
-<script type="text/javascript" src="<?php echo base_url();?>angularjs/myapp/services.js"></script>
-<script type="text/javascript" src="<?php echo base_url();?>angularjs/myapp/controllers.js"></script>
-<script type="text/javascript" src="<?php echo base_url();?>angularjs/jspdf.js"></script>
-<script type="text/javascript" src="<?php echo base_url();?>angularjs/jquery.base64.js"></script>
-<script type="text/javascript" src="<?php echo base_url();?>angularjs/base64.js"></script>
-<script type="text/javascript" src="<?php echo base_url();?>angularjs/sprintf.js"></script>
-<script type="text/javascript" src="<?php echo base_url();?>angularjs/myapp/cus_tableexport.js"></script>
-
+<script type="text/javascript" src="<?php echo base_url();?>angularjs/autocomplete/script/autocomplete.js"></script>
+<script type="text/javascript" src="<?php echo base_url();?>angularjs/autocomplete/script/app.js"></script>
 <!-- }); -->
 
-<!-- new code added Hein Htet Aung Aug 06, 2016({ --->
-<!--<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>-->
-<link href="<?php echo base_url();?>css/bootstrap-toogle.min.css" rel="stylesheet">
-<script type="text/javascript" src="<?php echo base_url();?>angularjs/bootstrap-toogle.min.js"></script>
-<!-- }); -->
 </head>
 <body class="dark-theme">

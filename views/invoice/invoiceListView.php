@@ -46,6 +46,52 @@ function confirmDelete() {
 			  
 			  <form method="get" action="<?php echo base_url();?>invoice">
 				Search: <input type="text" name="search" ng-model="search" ng-change="filter()" placeholder="Filter" />
+				
+				<?php 
+				if($this->session->userdata('user_type')=="admin" || $this->session->userdata('user_type')=="director"){ ?>
+				<select ng-model="manager_search" ng-change="agent_search=''; customer_search=''">
+					<option value="">All Managers</option>
+					<option ng-repeat="(key, value) in datas | groupBy: 'm_name'">{{key}}</option>
+				</select><?php
+				} ?>
+				
+				<?php
+				if($this->session->userdata('user_type')=="admin" || $this->session->userdata('user_type')=="director" || $this->session->userdata('user_type')=="manager"){ ?>
+				<select ng-model="agent_search" ng-change="customer_search=''">
+					<option value="">All Agents</option>
+					<!-- using where <option ng-repeat="(key, value) in datas | where:{m_name:manager_search} | groupBy: 'agent_name'">{{key}}</option> -->
+					
+					<option ng-repeat="obj in datas | where:{m_name:manager_search} | orderBy: 'agent_name' | groupBy: 'agent_name'">{{obj[0].agent_name}}</option>
+					
+					<option ng-hide="manager_search!=''" ng-repeat="obj in datas | orderBy: 'agent_name' | groupBy: 'agent_name'">{{obj[0].agent_name}}</option>
+					
+				</select><?php
+				} ?>
+				
+				
+				<?php
+				if($this->session->userdata('user_type')=="admin" || $this->session->userdata('user_type')=="director"){ ?>
+				<select ng-model="customer_search">
+					<option value="">All Funders</option>
+
+					<option ng-hide="agent_search!='' && obj[0].agent_name!=agent_search" ng-repeat="obj in datas | where:{m_name:manager_search} | orderBy: 'customer_name' | groupBy: 'customer_name'">{{obj[0].customer_name}}</option>					
+					
+					<option ng-hide="agent_search!='' || manager_search!=''" ng-repeat="obj in datas | orderBy: 'customer_name' | groupBy: 'customer_name'">{{obj[0].customer_name}}</option>
+				</select><?php
+				} ?>
+				
+				<?php
+				if($this->session->userdata('user_type')=="manager" || $this->session->userdata('user_type')=="agent"){ ?>
+				<select ng-model="customer_search">
+					<option value="">All Funders</option>
+
+					<option ng-hide="agent_search!='' && obj[0].agent_name!=agent_search" ng-repeat="obj in datas | where:{agent_name:agent_search} | orderBy: 'customer_name' | groupBy: 'customer_name'">{{obj[0].customer_name}}</option>					
+					
+					<option ng-hide="agent_search!='' || manager_search!=''" ng-repeat="obj in datas | orderBy: 'customer_name' | groupBy: 'customer_name'">{{obj[0].customer_name}}</option>
+				</select><?php
+				} ?>
+				
+				
 				<select ng-model="entryLimit" class="sel_entryLimit">
 					<option ng-selected="true">20</option>
 					<option>30</option>
@@ -56,7 +102,7 @@ function confirmDelete() {
 					<option>500</option>
 				</select>
 				<!--<input type="submit" class="btn btn-primary" value="Search" name="submit"/>-->
-			</form>
+				</form>
 			  <?php 
               if ($this->session->userdata('user_type') == 'customer') {?>
 				<!--- !important later implement -->
@@ -87,8 +133,12 @@ function confirmDelete() {
 						<th ng-click="sortField = 'payout.min'; reverse = !reverse"><a href="">Start Payout</a></th>
 						<th ng-click="sortField = 'payout.max'; reverse = !reverse"><a href="">End Payout</a></th>
 						<th ng-click="sortField = 'customer_name'; reverse = !reverse"><a href="">Funder</a></th>
-						<th ng-click="sortField = 'm_name'; reverse = !reverse"><a href="">Manager</a></th>
-						<th ng-click="sortField = 'agent_name'; reverse = !reverse"><a href="">Agent</a></th>
+						<?php if($this->session->userdata('user_type')!="manager" && $this->session->userdata('user_type')!="agent"){ ?>
+							<th ng-click="sortField = 'm_name'; reverse = !reverse"><a href="">Manager</a></th>
+						<?php } ?>
+						<?php if($this->session->userdata('user_type')!="agent"){ ?>
+							<th ng-click="sortField = 'agent_name'; reverse = !reverse"><a href="">Agent</a></th>
+						<?php } ?>
 						<th ng-click="sortField = 'inv_created_date'; reverse = !reverse"><a href="">Created Date</a></th>
 						<th>Action</th>
 					</tr>
@@ -126,14 +176,17 @@ function confirmDelete() {
 					// }
 					?>
 					
-					<tr id="{{datas.dr_id}}" tr-id="{{datas.dr_id}}" ng-repeat="datas in filtered = (datas | filter:search | orderBy : sortField :reverse |  startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit) track by $index">
+					<tr id="{{datas.dr_id}}" tr-id="{{datas.dr_id}}" ng-repeat="datas in filtered = (datas | filter:{inv_no:search, agent_name:agent_search, m_name:manager_search, customer_name:customer_search} | orderBy : sortField :reverse |  startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit) track by $index"> 
+					
 						<td>{{ datas.inv_no }}</td>
 						<td class="datetd">{{ datas.inv_date | date:'dd-MMM-yyyy' }}</td>
 						<td>{{ datas.inv_total | currency }}</td>
 						<td class="datetd">{{ convertToDate(datas.payout.min) | date:'dd-MMM-yyyy' }}</td>
 						<td class="datetd">{{ convertToDate(datas.payout.max) | date:'dd-MMM-yyyy' }}</td>
-						<td>{{ datas.customer_name }}</td>
-						<td>{{ datas.m_name }}</td>
+						<td style="text-transform:capitalize">{{ datas.customer_name }}</td>
+						<?php if($this->session->userdata('user_type')!="manager" && $this->session->userdata('user_type')!="agent"){ ?>
+							<td>{{ datas.m_name }}</td>
+						<?php } ?>
 						<td>{{ datas.agent_name }}</td>
 						<td class="datetd">{{ convertToDate(datas.inv_created_date) | date:'dd-MMM-yyyy' }}</td>
 						<td>

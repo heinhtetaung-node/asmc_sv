@@ -227,7 +227,7 @@ class Invoice_model extends CI_Model {
 			inner join manager on invoice.m_id = manager.m_id join
 			agent on agent.agent_id = invoice.agent_id join
 			customer on customer.customer_id = invoice.customer_id where invoice.active = 1 $where $where2
-			order by invoice.inv_no asc ".$filter;
+			order by invoice.inv_id desc ".$filter;
 		$query = $this->db->query($sql);
 		$inv = array();
 		if ($query->num_rows() > 0) {

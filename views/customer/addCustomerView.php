@@ -68,7 +68,7 @@ $this->load->view('sidebar');
 						<input type="text" name="customer_email" value="<?php echo set_value('customer_email', $customer_email);?>" class="form-control">
 					  </div>
 					  </div>
-					  <div class="form-group">
+					  <div class="form-group hidden">
 					  <label class="col-sm-3 control-label">Funder password</label>
 					  <div class="col-sm-9">
 					  	 <?php echo form_error('customer_pass');?>

@@ -36,8 +36,8 @@ define('FOPEN_READ_WRITE_CREATE',				'a+b');
 define('FOPEN_WRITE_CREATE_STRICT',				'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 
-define('WEB_TITLE', 'Asia Strategic Mining Corporation');
-define('BASE_PATH', '/home/asmc/public_html/crm/');
+define('WEB_TITLE', 'sds');
+define('BASE_PATH', '/home/sgdatacrm//public_html/asmc/');
 
 define('CONTRACT_PATH', BASE_PATH.'pdf/contract/');
 define('RISK_PATH', BASE_PATH.'pdf/risk/');
@@ -50,7 +50,7 @@ define('WORKSHEET_PATH', BASE_PATH.'pdf/worksheet/');
 define('BANK_PATH', BASE_PATH.'pdf/bank/');
 define('COMFORT_PATH', BASE_PATH.'pdf/comfort/');
 
-define('BASE_URL', 'http://asmc.com.sg/crm/');
+define('BASE_URL', 'http://localhost/asmc/crm/');
 define('CONTRACT_URL', BASE_URL.'pdf/contract/');
 define('RISK_URL', BASE_URL.'pdf/risk/');
 define('IRAS_URL', BASE_URL.'pdf/iras/');
@@ -64,8 +64,16 @@ define('RECEIPT_URL', BASE_URL.'pdf/receipts/');
 
 define('LOGO_PATH', BASE_PATH.'images/logo.png');
 
+
 define('RECEIPT_PREFIX', 'BM');
 define('EMAIL_SENDER', 'mailer@asmc.com.sg');
+
+
+define('SMTP_HOST', 'cpanel2.sgdatahub.com');
+define('SMTP_PORT', '465'); 
+define('SMTP_CRYPTO', 'tls');
+define('SMTP_USER', 'testmail@sgdatacrm.com');
+define('SMTP_PASS', 'testmail');
 
 
 /* End of file constants.php */

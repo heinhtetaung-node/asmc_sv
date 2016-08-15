@@ -38,7 +38,7 @@ $(document).ready(function() {
 
 </script>
 
-<div id="main-content"> 
+<div id="main-content" ng-controller="editFormctrl"> 
 	<div class="page-content">
    
 		<!-- title -->
@@ -54,8 +54,26 @@ $(document).ready(function() {
   
             <div class="header">
             <h3 class="content-header">
-             BM Steam Coal Reservation Form </h3>
-              
+            BM Steam Coal Reservation Form </h3>
+			<?php 
+			if ($this->session->userdata('user_type') == 'admin'){	// new code edit by Hein Htet Aung Aug 06, 2016
+				if(sizeof($permissionrecord)>0){
+					$checked="";
+					if($permissionrecord[0]['edit_permission']==1){
+						$checked="checked";
+					}
+					?>			
+					<div class="checkbox">
+					  <label>
+						<input type="hidden" id="f_id" value="<?php echo $_GET['id']; ?>">
+						<input id="changepermission" type="checkbox" <?php echo $checked; ?> data-toggle="toggle" data-style="android" data-onstyle="info" data-on="Enabled" data-off="Disabled">
+						The record is last more than 3 days. You can Enable/Disable permission by Creator.
+					  </label>
+					</div>
+					<?php
+				}
+			}				
+			?>
             </div>
     
             <div class="porlets-content">
@@ -216,7 +234,7 @@ $(document).ready(function() {
 				<tr>
 					<td style="text-align:center" colspan="6" >For Official Use Only:</td>
 				</tr>
-				<tr>
+				<tr style="display:none;">
 					<td colspan="2" ><label>CRM:</label></td>
 					<td><input type="text" name="crm" value="<?php echo isset($crm) ? set_value('crm', $crm) : set_value('crm', '');?>"></td>
 					<td ><label>SM:</label></td>
@@ -239,7 +257,7 @@ $(document).ready(function() {
 					<td ><label>Document Required:</label></td>
 					<td colspan="2">Funder NRIC/Passport copy</td>
 					<td ><label>Bank Book/Bank Statement:</label></td>
-					<td colspan="2"><input type="text" name="bank_book" placeholder="" value="<?php echo isset($bank_book) ? set_value('bank_book', $booking_ref_no) : set_value('bank_book', '');?>"></td>
+					<td colspan="2"><input type="text" name="bank_book" placeholder="" value="<?php echo isset($bank_book) ? set_value('bank_book', $bank_book) : set_value('bank_book', '');?>"></td>
 				</tr>
 				
 			</table>

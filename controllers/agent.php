@@ -116,8 +116,8 @@ class Agent extends CI_Controller {
 	}
 	
 	public function editAgent() {
-		if ($this->session->userdata('user_type') != 'admin')
-			exit;
+		//if ($this->session->userdata('user_type') != 'admin')
+			//exit;
 		$data['subtitle'] = 'Edit Agent';
 		$data['title'] = 'Agent';
 		$data['active'] = 'Agent';
@@ -211,6 +211,14 @@ class Agent extends CI_Controller {
 			$this->session->set_userdata('success', 'Agent deleted');
 			redirect('agent');
 		}
+	}
+	
+	public function update_agentstatus(){	// new code added by Hein Htet Aung August 07, 2016
+		$data = json_decode(file_get_contents("php://input"));     
+		
+		$res=$this->Agent_model->update_agentstatus($data->active, $data->agent_id);
+		
+		echo json_encode($res);
 	}
 	
 }

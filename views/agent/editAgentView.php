@@ -4,7 +4,7 @@ $this->load->view('navbar');
 $this->load->view('sidebar');
 ?>
 
-<div id="main-content"> 
+<div id="main-content" ng-controller="editagentctrl"> 
 	<div class="page-content">
    
 		<!-- title -->
@@ -82,12 +82,19 @@ $this->load->view('sidebar');
 						<input type="text" name="agent_code" value="<?php echo set_value('agent_code', $agent_code);?>" class="form-control">
 					  </div>
 					  </div>
+					  <div class="form-group">
+					  <label class="col-sm-3 control-label">Status</label>
+					  <div class="col-sm-9">
+					 	 <input class="status" type="checkbox" checked data-size="small" data-toggle="toggle" data-on="Active" data-off="Disable">
+					  </div>
+					  </div>
 					</div>
-					
+					<?php if ($this->session->userdata('user_type') == 'admin') { ?>
 					<div class="bottom">
 					  <button type="submit" class="btn btn-primary">Submit</button>
 					</div>
-					<input type="hidden" name="agent_id" value="<?php echo $agent->{'agent_id'};?>"/>
+					<?php } ?>
+					<input type="hidden" name="agent_id" id="agent_id" value="<?php echo $agent->{'agent_id'};?>"/>
 				</form>
             </div><!--/porlets-content-->
           </div><!--/block-web--> 
